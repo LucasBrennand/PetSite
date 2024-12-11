@@ -1,0 +1,516 @@
+<html>
+
+<head>
+    <base href="." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Laboratório Pet</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+
+</head>
+
+<body>
+
+    <div class="login-container" id="loginPage">
+        <div class="login-form">
+            <h2 class="text-center mb-4">Login Sistema Pet</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard-container" id="dashboardPage">
+        <button class="btn btn-primary user-info-button" onclick="showUserInfo()">
+            <i class="fas fa-user-cog"></i> Configurações
+        </button>
+
+        <div class="modal" id="userInfoModal">
+            <div class="modal-content">
+                <h3>Configurações do Sistema</h3>
+                <ul class="nav nav-tabs" id="configTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#dadosEmpresa">Dados da Empresa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#usuarios">Usuários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#permissoes">Permissões</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="dadosEmpresa">
+                        <form id="empresaForm">
+                            <div class="mb-3">
+                                <label class="form-label">Nome da Empresa</label>
+                                <input type="text" class="form-control" id="nomeEmpresa">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CNPJ</label>
+                                <input type="text" class="form-control" id="cnpj">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Endereço</label>
+                                <input type="text" class="form-control" id="endereco">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="usuarios">
+                        <button class="btn btn-success mb-3" onclick="showNovoUsuario()">Novo Usuário</button>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Usuário</th>
+                                    <th>Perfil</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuariosTable">
+                                <!-- Preenchido via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade" id="permissoes">
+                        <div class="permissions-grid">
+                            <div class="permission-item">
+                                <input type="checkbox" id="permClientes">
+                                <label for="permClientes">Clientes</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="permAnimais">
+                                <label for="permAnimais">Animais</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="permExames">
+                                <label for="permExames">Exames</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="permPedidos">
+                                <label for="permPedidos">Pedidos</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="permFaturamento">
+                                <label for="permFaturamento">Faturamento</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-3">Salvar Permissões</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary mt-3" onclick="hideUserInfo()">Fechar</button>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="menu-item" data-page="dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </div>
+            <div class="menu-item" data-page="clientes">
+                <i class="fas fa-users"></i> Clientes
+            </div>
+            <div class="menu-item" data-page="animais">
+                <i class="fas fa-paw"></i> Animais
+            </div>
+            <div class="menu-item" data-page="exames">
+                <i class="fas fa-microscope"></i> Exames
+            </div>
+            <div class="menu-item" data-page="pedidos">
+                <i class="fas fa-clipboard-list"></i> Pedidos
+            </div>
+            <div class="menu-item" data-page="faturamento">
+                <i class="fas fa-file-invoice-dollar"></i> Faturamento
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="dashboardContent">
+                <h2>Dashboard</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Total Clientes</h3>
+                        <p class="h2">150</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Exames do Mês</h3>
+                        <p class="h2">320</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Faturamento Mensal</h3>
+                        <p class="h2">R$ 45.000</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="examesChart"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="faturamentoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="clientesContent" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Clientes</h2>
+                    <button class="btn btn-success" onclick="showNovoClienteForm()">
+                        <i class="fas fa-plus"></i> Novo Cliente
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Tipo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTableBody">
+                            <!-- Filled via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="animaisContent" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Animais</h2>
+                    <button class="btn btn-success" onclick="showNovoAnimalForm()">
+                        <i class="fas fa-plus"></i> Novo Animal
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Raça</th>
+                                <th>Peso</th>
+                                <th>Idade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="animaisTableBody">
+                            <!-- Filled via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="examesContent" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Exames</h2>
+                    <button class="btn btn-success" onclick="showNovoExameForm()">
+                        <i class="fas fa-plus"></i> Novo Exame
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome do Exame</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="examesTableBody">
+                            <!-- Filled via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="pedidosContent" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Pedidos</h2>
+                    <button class="btn btn-success" onclick="showNovoPedidoForm()">
+                        <i class="fas fa-plus"></i> Novo Pedido
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Cliente</th>
+                                <th>Animal</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidosTableBody">
+                            <!-- Filled via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add novo pedido modal -->
+            <div class="modal" id="pedidoModal">
+                <div class="modal-content" style="max-width: 900px;">
+                    <h3 id="pedidoModalTitle">Novo Pedido</h3>
+                    <form id="pedidoForm" action="index.php" method="post">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">ID</label>
+                                <input type="text" class="form-control" id="pedidoId" name="pedidoID" readonly>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Data</label>
+                                <input type="date" class="form-control" id="pedidoData" name="pedidoData" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Cliente</label>
+                                <select class="form-control" id="pedidoCliente" name="pedidoCliente" required
+                                    onchange="loadAnimaisByCliente()">
+                                    <option value="">Selecione o cliente...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Animal</label>
+                                <select class="form-control" id="pedidoAnimal" name="pedidoAnimal" required>
+                                    <option value="">Selecione o animal...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h4>Exames</h4>
+                            <div id="examesPedidoContainer">
+                                <div class="row mb-2">
+                                    <div class="col-md-5">
+                                        <select class="form-control exame-select">
+                                            <option value="">Selecione o exame...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" class="form-control preco-input" placeholder="Preço">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control qtd-input" value="1" min="1">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-primary" onclick="addExamePedido()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h4>Total: R$ <span id="totalPedido">0.00</span></h4>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="hidePedidoModal()">Cancelar</button>
+                            <button type="button" class="btn btn-info" onclick="gerarPDF()">Gerar PDF</button>
+                            <button type="button" class="btn btn-success" id="btnPagar" onclick="realizarPagamento()"
+                                style="display: none;">
+                                Pagar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add novo exame modal -->
+            <div class="modal" id="exameModal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <h3 id="exameModalTitle">Novo Exame</h3>
+                    <form id="exameForm" action="index.php" method="post">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">ID</label>
+                                <input type="text" class="form-control" id="exameId" name="exameId" readonly>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Nome do Exame</label>
+                                <input type="text" class="form-control" id="exameNome" name="exameNome" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Preço (deixe em branco para "Sob Consulta")</label>
+                                <input type="number" step="0.01" class="form-control" id="examePreco" name="examePreco">
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideExameModal()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add novo cliente modal -->
+            <div class="modal" id="clienteModal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <h3 id="clienteModalTitle">Novo Cliente</h3>
+                    <form id="clienteForm" action="index.php" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ID</label>
+                                <input type="text" class="form-control" id="clienteId" name="clienteId" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="clienteNome" name="clienteNome" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CPF/CNPJ</label>
+                                <input type="text" class="form-control" id="clienteCpfCnpj" name="clienteCpfCnpj" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CEP</label>
+                                <input type="text" class="form-control" id="clienteCep" name="clienteCep">
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label">Endereço</label>
+                                <input type="text" class="form-control" id="clienteEndereco" name="clienteEndereco">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Número</label>
+                                <input type="text" class="form-control" id="clienteNumero" name="clienteNumero">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Complemento</label>
+                                <input type="text" class="form-control" id="clienteComplemento" name="clienteComplemento">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="clienteEmail" name="clienteEmail">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Telefones</label>
+                                <div id="telefonesContainer">
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control telefone-input" name="clienteTelefones[]">
+                                        <button type="button" class="btn btn-primary" onclick="addTelefoneField()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome do Responsável</label>
+                                <input type="text" class="form-control" id="clienteResponsavel" name="clienteResponsavel">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CPF do Responsável</label>
+                                <input type="text" class="form-control" id="clienteResponsavelCpf" name="clienteResponsavelCpf">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email do Responsável</label>
+                                <input type="email" class="form-control" id="clienteResponsavelEmail" name="clienteResponsavelEmail">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo de Cliente</label>
+                                <select class="form-control" id="clienteTipo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="CONTRATO">Contrato</option>
+                                    <option value="AVULSO">Avulso</option>
+                                    <option value="CONVENIO">Convênio</option>
+                                    <option value="OUTROS">Outros</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideClienteModal()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add novo animal modal -->
+            <div class="modal" id="animalModal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <h3 id="animalModalTitle">Novo Animal</h3>
+                    <form id="animalForm" action="index.php" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ID</label>
+                                <input type="text" class="form-control" id="animalId" name="animalId" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Cliente</label>
+                                <select class="form-control" id="animalCliente" name="animalCliente" required>
+                                    <option value="">Selecione o cliente...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome do Animal</label>
+                                <input type="text" class="form-control" id="animalNome" name="animalNome" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo</label>
+                                <select class="form-control" id="animalTipo" name="animalTipo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="DOG">DOG</option>
+                                    <option value="CAT">CAT</option>
+                                    <option value="HORSE">HORSE</option>
+                                    <option value="COW">COW</option>
+                                    <option value="OUTROS">OUTROS</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Raça</label>
+                                <input type="text" class="form-control" id="animalRaca" name="animalRaca" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Peso (kg)</label>
+                                <input type="number" step="0.1" class="form-control" id="animalPeso" name="animalPeso" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Idade</label>
+                                <input type="text" class="form-control" id="animalIdade" name="animalIdade" required>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary"
+                                onclick="hideAnimalModal()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
